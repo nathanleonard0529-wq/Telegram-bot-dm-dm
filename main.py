@@ -1,33 +1,15 @@
-import os
-from telegram import Update
-from telegram.ext import ApplicationBuilder, ChatJoinRequestHandler, ContextTypes
+# Import necessary libraries
+import telebot
 
-TOKEN = os.getenv("TOKEN")
-SECOND_CHANNEL = "https://t.me/+GLTLkS-32p03YzE0"
+# Initialize the bot
+bot = telebot.TeleBot('YOUR_BOT_TOKEN')
 
-async def join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    join_request = update.chat_join_request
-    user = join_request.from_user
+# Function to handle joining requests
+# Manual approval required for chat join requests, no automatic approval
 
-    # Envoi du message privé automatique
-    await context.bot.send_message(
-        chat_id=user.id,
-        text=(
-            "🚨 ALERTE CONFIANCE 🚨\n\n"
-            "➡️ CONFIANCE 99% 🔥\n\n"
-            "Rejoins le canal ici 👇\n"
-            f"🔗 {SECOND_CHANNEL}"
-        )
-    )
+# Function to send private messages
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.send_message(message.chat.id, "Welcome! Please wait for manual approval to join the chat.")
 
-    # Acceptation automatique dans le canal privé
-    await context.bot.approve_chat_join_request(
-        chat_id=join_request.chat.id,
-        user_id=user.id
-    )
-
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(ChatJoinRequestHandler(join_request))
-
-print("Bot lancé ✅")
-app.run_polling()
+# Other bot functionalities continue here...
